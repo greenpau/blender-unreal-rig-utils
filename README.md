@@ -28,6 +28,8 @@ the idea for this project: I wanted a reliable way to rig my Blender characters 
 in Unreal Engine without the usual headaches. I built this tool to make that process automatic and accessible,
 ensuring that any character developed in Blender can step right into an Unreal Engine project ready for action.
 
+You can read my research notes [here](./docs/README.md).
+
 ## Purpose
 
 The addon is designed to bridge the gap between Blender's modeling environment and the Unreal Engine 5 animation
@@ -48,6 +50,9 @@ The key objectives are:
   and "Quinn" presets directly from the `Shift + A` menu.
 
 ## Getting Started
+
+Download `blender-unreal-rig-utils_<VERSION>.zip` file from [releases](https://github.com/greenpau/blender-unreal-rig-utils/releases)
+and install it via "Add-ons" in "Edit > Preferences".
 
 The addon integrates seamlessly into the native Blender **Add** menu. By navigating to `Armature > Skeletons`,
 users can choose between the UE5 Manny or UE5 Quinn skeletons. Alternatively, you can press `Shift + A` in
