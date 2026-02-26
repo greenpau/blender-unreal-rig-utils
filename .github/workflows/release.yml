@@ -3,7 +3,7 @@ name: release
 on:
   push:
     tags:
-      - 'v*' # Trigger on version tags
+      - 'v*'
 
 jobs:
   test:
@@ -12,22 +12,32 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: test
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
+      - name: Prepare Addon Zip
+        id: prepare
+        run: |
+          # Define variables
+          PROJECT_NAME="blender-unreal-rig-utils"
+          VERSION=${GITHUB_REF_NAME} # This grabs the tag (e.g., v1.0.3)
+          ZIP_NAME="${PROJECT_NAME}_${VERSION}.zip"
+          
+          # Create the zip. 
+          # We include the folder itself so it's installable in Blender.
+          zip -r "$ZIP_NAME" unreal_rig_utils/ README.md LICENSE
+          
+          # Pass the filename to the next step
+          echo "zip_path=$ZIP_NAME" >> $GITHUB_OUTPUT
 
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          distribution: goreleaser
-          version: latest
-          args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: ${{ steps.prepare.outputs.zip_path }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true # Automatically creates a changelog
+          draft: false
+          prerelease: false
