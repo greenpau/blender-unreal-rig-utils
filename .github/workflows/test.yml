@@ -61,6 +61,18 @@ jobs:
           # We pass BLENDER_BIN=blender because we added it to the PATH above
           xvfb-run --auto-servernum make test BLENDER_BIN=blender
 
+      - name: Install Dependencies in Blender Python
+        run: |
+          BLENDER_PATH=$(which blender)
+          PYTHON_BIN=$(dirname $BLENDER_PATH)/5.0/python/bin/python3.11
+          $PYTHON_BIN -m pip install coverage
+
+      - name: Run Tests with Coverage
+        run: make coverage
+        env:
+          BLENDER_BIN: blender
+          GITHUB_ACTIONS: true
+
       - name: Upload Debug Blend Files
         if: always()
         uses: actions/upload-artifact@v4
@@ -83,3 +95,15 @@ jobs:
           name: quinn-rig-${{ github.run_id }}
           path: tests/tmp/test_result_quinn_*.blend
           retention-days: 14
+
+      - name: Upload Coverage Results (XML)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+      - name: Upload Coverage Results (HTML)
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: tests/tmp/htmlcov/
