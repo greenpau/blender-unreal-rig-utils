@@ -45,6 +45,9 @@ build:
 clean:
 	@echo "$@: started"
 	@rm -rf tests/tmp/*
+	@rm -rf .coverage
+	@rm -rf coverage.xml
+	@rm -rf dist/
 	@echo "$@: complete"
 
 .PHONE: test

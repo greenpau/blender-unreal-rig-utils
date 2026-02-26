@@ -1,4 +1,4 @@
-# Unreal Rig Utils for Blender
+# Blender Addon for Unreal Engine Character Rigging
 
 A lightweight Blender addon to instantly generate industry-standard **UE5 Manny** and **UE5 Quinn** armatures.
 Built specifically for the Blender 5.0.1+ API using the modern Bone Collections system.
