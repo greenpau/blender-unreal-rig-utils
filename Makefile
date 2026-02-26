@@ -11,10 +11,14 @@ ifeq ($(GITHUB_ACTIONS), true)
     BLENDER_BIN ?= blender
     # In CI, we usually don't need to 'install' to a local folder, 
     # but we define a temp path just in case.
+	BLENDER_PY ?= ./blender-dist/5.0/python/bin/python3.11
+	BLENDER_PY_SITE_PACKAGES ?= ./blender-dist/5.0/python/bin/python3.11/site-packages
     LOCAL_BLENDER_ADDONS_DIR = /tmp/blender/addons
 else
     # Local macOS settings
     BLENDER_BIN ?= /Applications/Blender.app/Contents/MacOS/Blender
+	BLENDER_PY ?= /Applications/Blender.app/Contents/Resources/5.0/python/bin/python3.11
+	BLENDER_PY_SITE_PACKAGES ?= /Applications/Blender.app/Contents/Resources/5.0/python/lib/python3.11/site-packages
     LOCAL_BLENDER_ADDONS_DIR = ~/Library/Application\ Support/Blender/5.0/scripts/addons
 endif
 
@@ -40,7 +44,7 @@ build:
 .PHONE: clean
 clean:
 	@echo "$@: started"
-	@rm -rf tests/tmp/*.blend
+	@rm -rf tests/tmp/*
 	@echo "$@: complete"
 
 .PHONE: test
@@ -49,6 +53,17 @@ test: clean
 	@set -e; for file in tests/*.py; do \
 		$(BLENDER_BIN) --background --python $$file; \
 	done
+	@echo "$@: complete"
+
+.PHONE: coverage
+coverage: clean
+	@echo "$@: started"
+	@mkdir -p tests/tmp/htmlcov
+	$(BLENDER_PY) -V
+	$(BLENDER_BIN) --background --python tests/test_rig_gen.py
+	$(BLENDER_PY) -m coverage report
+	$(BLENDER_PY) -m coverage xml -o coverage.xml
+	$(BLENDER_PY) -m coverage html -d tests/tmp/htmlcov
 	@echo "$@: complete"
 
 .PHONE: install
@@ -68,6 +83,7 @@ uninstall:
 dep:
 	@echo "$@: started"
 	pip install -r requirements.txt
+	$(BLENDER_PY) -m pip install --upgrade --target "$(BLENDER_PY_SITE_PACKAGES)" coverage
 	@echo "$@: complete"
 
 .PHONY: release

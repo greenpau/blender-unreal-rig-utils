@@ -7,3 +7,4 @@ black
 
 # For running unit tests on your rigging logic
 pytest
+coverage

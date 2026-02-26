@@ -1,0 +1,12 @@
+[run]
+source = unreal_rig_utils
+branch = True
+relative_files = True
+concurrency = thread
+
+[report]
+show_missing = True
+# Exclude the test runner from the report
+omit = 
+    tests/*
+    setup.py
