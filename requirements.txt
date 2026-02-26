@@ -1,0 +1,9 @@
+# Autocomplete for the Blender 5.0 API
+fake-bpy-module-latest
+
+# Code quality and style checking
+flake8
+black
+
+# For running unit tests on your rigging logic
+pytest
