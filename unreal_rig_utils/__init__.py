@@ -20,7 +20,7 @@
 bl_info = {
     "name": "Unreal Engine Skeleton Rigging Utilities",
     "author": "Paul Greenberg @greenpau",
-    "version": (1, 0, 5),
+    "version": (1, 0, 6),
     "blender": (5, 0, 1),
     "location": "View3D > Add > Armature > Skeletons",
     "description": "Adds Unreal Engine skeletons to the Add menu.",
