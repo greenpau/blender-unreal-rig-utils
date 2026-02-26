@@ -1,0 +1,31 @@
+---
+version: 2
+
+project_name: blender-unreal-rig-utils
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - skip: true
+
+archives:
+  - name_template: "{{ .ProjectName }}_{{ .Version }}"
+    format: zip
+    files:
+      - src: 'unreal_rig_utils/**/*'
+        strip_parent: false
+      - README.md
+      - LICENSE
+
+release:
+  github:
+    owner: greenpau
+    name: blender-unreal-rig-utils
+  draft: false
+  prerelease: auto
+  mode: replace
+
+checksum:
+  name_template: 'checksums.txt'

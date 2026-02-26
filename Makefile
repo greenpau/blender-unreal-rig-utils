@@ -73,17 +73,17 @@ dep:
 .PHONY: release
 release:
 	@echo "$@: started"
-	@#if [ $(GIT_BRANCH) != "main" ]; then echo "cannot release to non-main branch $(GIT_BRANCH)" && false; fi
-	@#git diff-index --quiet HEAD -- || ( echo "git directory is dirty, commit changes first" && false )
+	@if [ $(GIT_BRANCH) != "main" ]; then echo "cannot release to non-main branch $(GIT_BRANCH)" && false; fi
+	@git diff-index --quiet HEAD -- || ( echo "git directory is dirty, commit changes first" && false )
 	@versioned -patch
 	@echo "Patched version"
-	@#git add VERSION
+	@git add VERSION
 	@versioned -release -sync unreal_rig_utils/__init__.py -format blender
-	@#git add unreal_rig_utils/__init__.py
-	@#git commit -m "released v`cat VERSION | head -1`"
-	@#git tag -a v`cat VERSION | head -1` -m "v`cat VERSION | head -1`"
-	@#git push
-	@#git push --tags
+	@git add unreal_rig_utils/__init__.py
+	@git commit -m "released v`cat VERSION | head -1`"
+	@git tag -a v`cat VERSION | head -1` -m "v`cat VERSION | head -1`"
+	@git push
+	@git push --tags
 	@@echo "If necessary, run the following commands:"
 	@echo "  git push --delete origin v$(PROJECT_VERSION)"
 	@echo "  git tag --delete v$(PROJECT_VERSION)"
