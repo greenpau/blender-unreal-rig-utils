@@ -3,6 +3,7 @@ import unittest
 import os
 import sys
 import time
+from datetime import datetime
 
 project_root = os.path.dirname(os.path.dirname(__file__))
 if project_root not in sys.path:
@@ -31,9 +32,13 @@ class TestUE5RigGeneration(unittest.TestCase):
 
     def save_temp_file(self, filename):
         """Helper to save the current state to the tmp directory."""
-        filepath = os.path.join(self.tmp_dir, f"{filename}.blend")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # Example result: test_result_manny_20260226_124500.blend
+        full_name = f"{filename}_{timestamp}.blend"
+        filepath = os.path.join(self.tmp_dir, full_name)
+        
         bpy.ops.wm.save_as_mainfile(filepath=filepath)
-        print(f"  [FILE] Saved temporary test file: {filepath}")
+        print(f"  [FILE] Saved: {filepath}")
 
     def test_manny_creation(self):
         """Test: Generate Manny and save a temporary blend file."""

@@ -66,3 +66,19 @@ jobs:
         with:
           name: blender-5-0-1-test-results
           path: tests/tmp/*.blend
+
+      - name: Upload Manny Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manny-rig-${{ github.run_id }}
+          path: tests/tmp/test_result_manny_*.blend
+          retention-days: 14
+
+      - name: Upload Quinn Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quinn-rig-${{ github.run_id }}
+          path: tests/tmp/test_result_quinn_*.blend
+          retention-days: 14
